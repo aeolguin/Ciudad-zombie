@@ -21,7 +21,19 @@ var Juego = {
     /*Aca se van a agregar los obstaculos visibles. Tenemos una valla horizontal
     de ejemplo, pero podras agregar muchos mas. */
     new Obstaculo('imagenes/valla_horizontal.png', 70, 430, 30, 30, 1),
-    new Obstaculo('imagenes/bache.png', 120,400,30,30,1),
+    new Obstaculo('imagenes/valla_horizontal.png', 100, 430, 30, 30, 1),
+    new Obstaculo('imagenes/valla_horizontal.png', 130, 430, 30, 30, 1),
+    new Obstaculo('imagenes/valla_horizontal.png', 500, 430, 30, 30, 1),
+    new Obstaculo('imagenes/valla_vertical.png', 190, 450, 30, 30, 1),
+    new Obstaculo('imagenes/valla_vertical.png', 480, 480, 30, 30, 1),
+    new Obstaculo('imagenes/valla_vertical.png', 480, 450, 30, 30, 1),
+    new Obstaculo('imagenes/bache.png', 180,290,30,30,1),
+    new Obstaculo('imagenes/bache.png', 520,130,30,30,1),
+    new Obstaculo('imagenes/bache.png', 800,390,30,30,1),
+    new Obstaculo('imagenes/bache.png', 350,460,30,30,1),
+    new Obstaculo('imagenes/auto_verde_abajo.png', 180,220,15,30,1),
+    new Obstaculo('imagenes/auto_verde_abajo.png', 780,430,15,30,1),
+    new Obstaculo('imagenes/auto_verde_derecha.png', 390,390,30,15,1),
 
   ],
   /* Estos son los bordes con los que se puede chocar, por ejemplo, la vereda.
@@ -117,18 +129,26 @@ Juego.capturarMovimiento = function(tecla) {
   if (tecla == 'izq') {
     movX = -velocidad;
     Jugador.sprite = 'imagenes/auto_rojo_izquierda.png';
+    Jugador.ancho = 30;
+    Jugador.alto = 15;
   }
   if (tecla == 'arriba') {
     movY = -velocidad;
     Jugador.sprite = 'imagenes/auto_rojo_arriba.png';
+    Jugador.ancho = 15;
+    Jugador.alto = 30;
   }
   if (tecla == 'der') {
     movX = velocidad;
     Jugador.sprite = 'imagenes/auto_rojo_derecha.png';
+    Jugador.ancho = 30;
+    Jugador.alto = 15;
   }
   if (tecla == 'abajo') {
     movY = velocidad;
     Jugador.sprite = 'imagenes/auto_rojo_abajo.png';
+    Jugador.ancho = 15;
+    Jugador.alto = 30;
   }
 
   // Si se puede mover hacia esa posicion hay que hacer efectivo este movimiento
@@ -211,6 +231,7 @@ Juego.chequearColisiones = function(x, y) {
       /*COMPLETAR, obstaculo debe chocar al jugador*/
       obstaculo.chocar(Jugador);
       obstaculo.potencia = 0;
+      
       puedeMoverse = false
     }
   }, this)

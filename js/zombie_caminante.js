@@ -42,6 +42,6 @@ ZombieCaminante.prototype.mover = function() {
 haciendole perder 1 vida al jugador. Si se quiere modificar el valor de ataque
 del zombie caminante habra que reimplementar este metodo desde el objeto ZombieCaminante
 
-ZombieConductor.prototype.atacar = function(jugador) {
-  ...
+ZombieCaminante.prototype.atacar = function(jugador) {
+  Jugador.perderVidas(1);
 }*/

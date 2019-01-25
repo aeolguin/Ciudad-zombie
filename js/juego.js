@@ -63,9 +63,9 @@ var Juego = {
     new ZombieCaminante('imagenes/zombie3.png',150,120,10,10,1,{desdeX: 20, hastaX: 941, desdeY: 20, hastaY: 557}),
     new ZombieCaminante('imagenes/zombie4.png',585,770,10,10,1,{desdeX: 20, hastaX: 941, desdeY: 20, hastaY: 557}),
     new ZombieCaminante('imagenes/zombie4.png',880,600,10,10,1,{desdeX: 480, hastaX: 941, desdeY: 20, hastaY: 600}),
-    //new ZombieConductor('imagenes/tren_horizontal.png',400,322,90,30,5,{desdeX: 20, hastaX: 850, desdeY: 0, hastaY: 322},"h"),
-    //new ZombieConductor('imagenes/tren_vertical.png',644,0,30,90,5,{desdeX: 0, hastaX: 850, desdeY: 0, hastaY: 470},"v"),
-    //new ZombieConductor('imagenes/tren_vertical.png',678,0,30,90,3,{desdeX: 0, hastaX: 850, desdeY: 0, hastaY: 470},"v")
+    new ZombieConductor('imagenes/tren_horizontal.png',400,322,90,30,5,{desdeX: 20, hastaX: 850, desdeY: 0, hastaY: 322},"h","o"),
+    new ZombieConductor('imagenes/tren_vertical.png',644,0,30,90,5,{desdeX: 0, hastaX: 850, desdeY: 0, hastaY: 470},"o","v"),
+    new ZombieConductor('imagenes/tren_vertical.png',678,0,30,90,3,{desdeX: 0, hastaX: 850, desdeY: 0, hastaY: 470},"o", "v")
   ]
 
 }
@@ -224,9 +224,11 @@ Juego.calcularAtaques = function() {
     if (this.intersecan(enemigo, this.jugador, this.jugador.x, this.jugador.y)) {
       /* Si el enemigo colisiona debe empezar su ataque
       COMPLETAR */
+      enemigo.comenzarAtaque(Jugador);
     } else {
       /* Sino, debe dejar de atacar
       COMPLETAR */
+      enemigo.dejarDeAtacar();
     }
   }, this);
 };

@@ -14,6 +14,7 @@ var Juego = {
   altoCanvas: 577,
   jugador: Jugador,
   vidasInicial: Jugador.vidas,
+  nivel : 0,
   // Indica si el jugador gano
   ganador: false,
 
@@ -66,8 +67,7 @@ var Juego = {
     new ZombieConductor('imagenes/tren_horizontal.png',400,322,90,30,5,{desdeX: 20, hastaX: 850, desdeY: 0, hastaY: 322},"h","o"),
     new ZombieConductor('imagenes/tren_vertical.png',644,0,30,90,5,{desdeX: 0, hastaX: 850, desdeY: 0, hastaY: 470},"o","v"),
     new ZombieConductor('imagenes/tren_vertical.png',678,0,30,90,3,{desdeX: 0, hastaX: 850, desdeY: 0, hastaY: 470},"o", "v")
-  ]
-
+  ],
 }
 
 /* Se cargan los recursos de las imagenes, para tener un facil acceso
@@ -93,9 +93,11 @@ Juego.iniciarRecursos = function() {
     'imagenes/auto_rojo_derecha.png',
     'imagenes/auto_rojo_izquierda.png',
     'imagenes/auto_verde_abajo.png',
-    'imagenes/auto_verde_derecha.png'
+    'imagenes/auto_verde_derecha.png',
+    "imagenes/200-bandera-Meta.jpg"
   ]);
   Resources.onReady(this.comenzar.bind(Juego));
+
 };
 
 // Agrega los bordes de las veredas a los obstaculos de la carretera
@@ -109,12 +111,15 @@ Juego.comenzar = function() {
   /* El bucle principal del juego se llamara continuamente para actualizar
   los movimientos y el pintado de la pantalla. Sera el encargado de calcular los
   ataques, colisiones, etc*/
+  
   this.buclePrincipal();
 };
 
 Juego.buclePrincipal = function() {
-
-  // Con update se actualiza la logica del juego, tanto ataques como movimientos
+  if (musica.activo) {
+  musica.reproducirAudio(musica.audioCentral);
+  }
+    // Con update se actualiza la logica del juego, tanto ataques como movimientos
   this.update();
   // Funcion que dibuja por cada fotograma a los objetos en pantalla.
   this.dibujar();
@@ -174,7 +179,7 @@ Juego.dibujar = function() {
   Dibujante.borrarAreaDeJuego();
   //Se pinta la imagen de fondo segun el estado del juego
   this.dibujarFondo();
-
+  Dibujante.dibujarImagen('imagenes/200-bandera-Meta.jpg',760, 530, 125, 35);
 
   /* Aca hay que agregar la logica para poder dibujar al jugador principal
   utilizando al dibujante y los metodos que nos brinda.
@@ -189,10 +194,16 @@ Juego.dibujar = function() {
   });
 
   // Se recorren los enemigos pintandolos
+  if (this.nivel===0){
   this.enemigos.forEach(function(enemigo) {
     /* Completar */
     Dibujante.dibujarEntidad(enemigo);
-  });
+  })}else {
+    this.enemigosNivelMaximo.forEach(function(enemigo) {
+      /* Completar */
+      Dibujante.dibujarEntidad(enemigo);
+    })
+  }
 
   // El dibujante dibuja las vidas del jugador
   var tamanio = this.anchoCanvas / this.vidasInicial;
@@ -272,16 +283,36 @@ Juego.dibujarFondo = function() {
   if (this.terminoJuego()) {
     Dibujante.dibujarImagen('imagenes/mensaje_gameover.png', 0, 5, this.anchoCanvas, this.altoCanvas);
     document.getElementById('reiniciar').style.visibility = 'visible';
+  // Se pone en pausa el sonido principal y se activa y un sonido de juego perdido
+    document.getElementById("reiniciar").addEventListener("click" , function (){
+      musica.activo = 1;
+      window.location.reload();
+    })
+    
+    musica.activo = 0
+    musica.pararAudio(musica.audioCentral);
+    musica.reproducirAudio(musica.gameOver);
+
     this.enemigos = [];
-    Dibujante.dibujarEntidad(enemigo);
+    this.obstaculosCarretera = [];
   }
 
   // Si se gano el juego hay que mostrar el mensaje de ganoJuego de fondo
   else if (this.ganoJuego()) {
     Dibujante.dibujarImagen('imagenes/Splash.png', 190, 113, 500, 203);
     document.getElementById('reiniciar').style.visibility = 'visible';
+    // Se pone en pausa el sonido principal y se activa y un sonido de juego ganado
+    document.getElementById("reiniciar").addEventListener("click" , function (){
+      musica.activo = 1;
+      window.location.reload();
+    })
+    musica.activo = 0
+    musica.pararAudio(musica.audioCentral);
+    musica.reproducirAudio(musica.ganador);
+
     this.enemigos = [];
-    Dibujante.dibujarEntidad(enemigo);
+    this.obstaculosCarretera = [];
+    //Dibujante.dibujarEntidad(enemigo);
 
   } else {
     Dibujante.dibujarImagen('imagenes/mapa.png', 0, 5, this.anchoCanvas, this.altoCanvas);
